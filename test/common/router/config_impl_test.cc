@@ -1074,7 +1074,7 @@ virtual_hosts:
           prefix: "/"
           headers:
             - name: test_header
-              value: "(+not a regex)"
+              exact_match: "(+not a regex)"
         route: { cluster: "local_service" }
   )EOF";
 
@@ -1087,8 +1087,7 @@ virtual_hosts:
           prefix: "/"
           headers:
             - name: test_header
-              value: "(+invalid regex)"
-              regex: true
+              regex_match: "(+invalid regex)"
         route: { cluster: "local_service" }
   )EOF";
 
@@ -4191,6 +4190,7 @@ virtual_hosts:
           prefix: "/"
           headers:
             - name: test_header_presence
+              present_match: true
         route:
           cluster: local_service_with_empty_headers
       - match:

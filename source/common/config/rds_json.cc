@@ -103,6 +103,8 @@ void RdsJson::translateHeaderMatcher(const Json::Object& json_header_matcher,
     const auto json_range_match = json_header_matcher.getObject("range_match");
     range->set_start(json_range_match->getInteger("start"));
     range->set_end(json_range_match->getInteger("end"));
+  } else {
+    header_matcher.set_present_match(true);
   }
 }
 

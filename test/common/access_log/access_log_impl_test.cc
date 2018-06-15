@@ -606,6 +606,7 @@ filter:
   header_filter:
     header:
       name: test-header
+      present_match: true
 config:
   path: /dev/null
   )EOF";
@@ -628,7 +629,6 @@ filter:
     header:
       name: test-header
       exact_match: exact-match-value
-
 config:
   path: /dev/null
   )EOF";

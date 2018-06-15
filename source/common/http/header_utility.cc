@@ -53,19 +53,9 @@ HeaderUtility::HeaderData::HeaderData(const envoy::api::v2::route::HeaderMatcher
     header_match_type_ = HeaderMatchType::Suffix;
     value_ = config.suffix_match();
     break;
-  case envoy::api::v2::route::HeaderMatcher::HEADER_MATCH_SPECIFIER_NOT_SET:
-    FALLTHRU;
   default:
-    if (PROTOBUF_GET_WRAPPED_OR_DEFAULT(config, regex, false)) {
-      header_match_type_ = HeaderMatchType::Regex;
-      regex_pattern_ = RegexUtil::parseRegex(config.value());
-    } else if (config.value().empty()) {
-      header_match_type_ = HeaderMatchType::Present;
-    } else {
-      header_match_type_ = HeaderMatchType::Value;
-      value_ = config.value();
-    }
-    break;
+    // Checked by schema.
+    NOT_REACHED;
   }
 }
 

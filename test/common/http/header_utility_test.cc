@@ -34,6 +34,7 @@ TEST(HeaderDataConstructorTest, JsonConstructor) {
 TEST(HeaderDataConstructorTest, NoSpecifierSet) {
   const std::string yaml = R"EOF(
 name: test-header
+present_match: true
   )EOF";
 
   HeaderUtility::HeaderData header_data =
@@ -46,7 +47,7 @@ name: test-header
 TEST(HeaderDataConstructorTest, ValueSet) {
   const std::string yaml = R"EOF(
 name: test-header
-value: value
+exact_match: value
   )EOF";
 
   HeaderUtility::HeaderData header_data =
@@ -55,21 +56,6 @@ value: value
   EXPECT_EQ("test-header", header_data.name_.get());
   EXPECT_EQ(HeaderUtility::HeaderMatchType::Value, header_data.header_match_type_);
   EXPECT_EQ("value", header_data.value_);
-}
-
-TEST(HeaderDataConstructorTest, ValueAndRegexFlagSet) {
-  const std::string yaml = R"EOF(
-name: test-header
-value: value
-regex: true
-  )EOF";
-
-  HeaderUtility::HeaderData header_data =
-      HeaderUtility::HeaderData(parseHeaderMatcherFromYaml(yaml));
-
-  EXPECT_EQ("test-header", header_data.name_.get());
-  EXPECT_EQ(HeaderUtility::HeaderMatchType::Regex, header_data.header_match_type_);
-  EXPECT_EQ("", header_data.value_);
 }
 
 TEST(HeaderDataConstructorTest, ExactMatchSpecifier) {
@@ -205,10 +191,12 @@ TEST(MatchHeadersTest, MustMatchAllHeaderData) {
 
   const std::string yamlA = R"EOF(
 name: match-header-A
+present_match: true
   )EOF";
 
   const std::string yamlB = R"EOF(
 name: match-header-B
+present_match: true
   )EOF";
 
   std::vector<HeaderUtility::HeaderData> header_data;
@@ -227,6 +215,7 @@ TEST(MatchHeadersTest, HeaderPresence) {
   TestHeaderMapImpl unmatching_headers{{"other-header", "value"}};
   const std::string yaml = R"EOF(
 name: match-header
+present_match: true
   )EOF";
 
   std::vector<HeaderUtility::HeaderData> header_data;
